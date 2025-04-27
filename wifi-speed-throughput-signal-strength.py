@@ -2,9 +2,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Example data (replace with your actual measurements)
-signal_strength = [-40, -55, -65, -75, -82]  # dBm
-wifi_speed = [866, 650, 300, 150, 72]  # Mbps
-throughput = [750, 500, 200, 80, 30]  # Mbps
+signal_strength = [-40, -58, -74, -62, -86]  # dBm
+wifi_speed = [433, 390, 195, 72.2, 14.4]  # Mbps
+throughput = [289.498, 248.734, 90.288, 41.394, 10.878]  # Mbps
 
 # Create the plot
 fig, ax1 = plt.subplots()

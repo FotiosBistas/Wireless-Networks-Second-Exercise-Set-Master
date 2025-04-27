@@ -2,8 +2,8 @@ import matplotlib.pyplot as plt
 
 # Distance as category numbers (not meters)
 distance = [1, 2, 3, 4, 5]  # 1=Very Close, 2-4=Intermediate, 5=Far
-signal_strength = [-40, -55, -65, -75, -82]  # dBm (example)
-wifi_speed = [866, 650, 300, 150, 72]  # Mbps (example)
+signal_strength = [-40, -58, -74, -62, -86]  # dBm
+wifi_speed = [433, 390, 195, 72.2, 14.4]  # Mbps
 
 
 signal_strength.sort(reverse=False)
