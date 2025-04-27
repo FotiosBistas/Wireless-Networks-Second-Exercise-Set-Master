@@ -15,7 +15,6 @@ ax1.set_xlabel('Signal Strength (dBm)')
 ax1.set_ylabel('Wi-Fi Link Speed (Mbps)', color=color)
 ax1.plot(signal_strength, wifi_speed, marker='o', color=color, label='Wi-Fi Speed')
 ax1.tick_params(axis='y', labelcolor=color)
-ax1.invert_xaxis()  # Because higher (closer to 0) dBm means stronger
 
 ax2 = ax1.twinx()  # second y-axis
 color = 'tab:green'
