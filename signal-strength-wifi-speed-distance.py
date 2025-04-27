@@ -6,7 +6,6 @@ signal_strength = [-40, -58, -74, -62, -86]  # dBm
 wifi_speed = [433, 390, 195, 72.2, 14.4]  # Mbps
 
 
-signal_strength.sort(reverse=False)
 
 fig, ax1 = plt.subplots()
 
@@ -15,7 +14,6 @@ ax1.set_xlabel('Distance to AP')
 ax1.set_ylabel('Signal Strength (dBm)', color=color)
 ax1.plot(distance, signal_strength, marker='o', color=color, label='Signal Strength')
 ax1.tick_params(axis='y', labelcolor=color)
-ax1.invert_yaxis()
 
 ax2 = ax1.twinx()
 color = 'tab:blue'
