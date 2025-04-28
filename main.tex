@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage{graphicx} % Required for inserting images
 \usepackage{amsmath}
+\usepackage{listings}
 \usepackage[hidelinks]{hyperref}
 \usepackage{float}
 
@@ -245,25 +246,70 @@ Did you expect this relationship?
 
 \subsection{Answer}
 
-These measurements were carried out using a laptop and iperf3.
+The iperf3 server was run on my desktop with the Ethernet connection. The throughput measurements were carried out using a laptop and iperf3. It was set up to run the following command: 
+\begin{lstlisting}
+iperf3 -c <hostname> -t 60 -i 10 > iperf3_output.txt
+\end{lstlisting}
 
-\begin{center}
+5 measurements of the above configuration were carried at each spot. In order to obtain the signal strength and the link speed the following command was used: 
+
+\begin{lstlisting}
+$ iw dev wlp4s0 link
+Connected to 74:06:35:89:ba:84 (on wlp4s0)
+	SSID: COSMOTE-178276
+	freq: 5500.0
+	RX: 16697197 bytes (190107 packets)
+	TX: 888979574 bytes (579832 packets)
+	signal: -75 dBm
+	rx bitrate: 130.0 MBit/s VHT-MCS 3 80MHz short GI VHT-NSS 1
+	bss flags: short-slot-time
+	dtim period: 1
+	beacon int: 100  
+\end{lstlisting}
+
+The following is the table containing the measurements: 
+
 \begin{tabular}{| c | c | c | c |}
     \hline
-     Distance To AP & Signal Strength & Link Speed & Throughput\\
+     Distance To AP & Signal Strength & Link Speed & Throughput (Mbps)\\
      \hline
-     Very Close (1) & & &  \\
+     Very Close (1) & -40dBm & 433-390Mbps & 300.00,275.33,269.83,301.50,300.83=289.498  \\
      \hline
-     Intermediate (2)& & & \\
+     Intermediate (2) & -58dBm & 390-195.5Mbps & 263.83,255.67,256.50,249.17,218.50=248.734  \\
      \hline
-     Intermediate (3)& & & \\
+     Intermediate (3) & -74dBm & 195-130Mbps & 107.34,107.39,51.31,77.76,107.64=90.288 \\
      \hline
-     Intermediate (4)& & & \\
+     Intermediate (4) & -62dBm & 72.2-7.2Mbps & 42.75,40.59,40.94,42.15,40.54=41.394 \\
      \hline
-     Far (5) & & & \\
+     Far (5) & -86dBm & 14.4-5.5Mps & 11.93,10.38,11.43,10.08,10.57=10.878 \\
      \hline
 \end{tabular} 
-\end{center}
 
+\subsubsection{Graphs}
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/signal_strength_wifi_speed_distance.png}
+    \caption{Signal strength and Wi-Fi link speed as a function of distance from the Access Point. As distance increases, signal strength decreases and link speed generally drops.}
+    \label{fig:signal-strength-wifi-speed-distance}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=1\linewidth]{images/wifi-speed-throughput-signal-strength.png}
+    \caption{Wi-Fi link speed and TCP throughput as functions of signal strength. Both metrics generally improve as the signal becomes stronger (closer to 0 dBm).}
+    \label{fig:signal-strength-wifi-speed-distance}
+\end{figure}
+\subsubsection{i) What is the shape of the two graphs? Did you expect this shape?}
+\begin{itemize}
+    \item Graph A (Signal Strength \& Link Speed vs. Distance): Both curves fall off as distance increases—signal strength drops (more negative dBm) and link speed declines. It’s essentially a monotonically decreasing trend (with a small local “bump” at point 4), resembling the classic path-loss decay you’d expect as you move away from an AP. Perhaps the bump is due to better multipath signals.
+    \item Graph B (Link Speed \& Throughput vs. Signal): Both link speed and TCP throughput rise together as signal improves (moves from –85 dBm toward –40 dBm). The two metrics track each other closely in a roughly linear, positive-correlation fashion.
+\end{itemize}
+
+
+Yes—these shapes are exactly what one predicts: Wi-Fi suffers increasing path loss (hence lower link rates) with distance, and higher signal levels yield higher link rates and real-world throughput.
+\subsubsection{ii) How would the first graph (A) change if the representation was a function of the logarithm of distance?}
+If you re-plot signal and speed versus log(distance) instead of linear “distance category,” the curves would straighten out into something closer to a linear decline. In wireless path-loss theory, power falls off proportional to $\frac{1}{d^n}$, so on a log-distance scale you see an approximately straight line rather than a steep curve.
+\subsubsection{iii) In the second graph (B), how does the throughput compare with the Wi-Fi interface speed? Did you expect this relationship?}
+Throughput (green) consistently runs below the raw link speed (blue), but follows the same upward trend. That is, at –60 dBm your device might link at ~400 Mbps but achieve ~260 Mbps TCP. This gap is expected—overheads (MAC/PHY framing, retransmits, protocol inefficiencies) mean real TCP rates are typically a portion of the negotiated link rate.
 \end{document}
 
